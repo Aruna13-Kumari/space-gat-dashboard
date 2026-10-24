@@ -60,4 +60,39 @@ The model is implemented using PyTorch Geometric.
 
 Evaluation metrics and the confusion matrix are provided in the `data/` directory.
 
-The model predicts labels derived from the project's risk-scoring methodology. These predictions should not be interpreted as validated real
+
+The model predicts labels derived from the project's risk-scoring methodology. Its predictions should not be interpreted as validated real-world collision probabilities or operational collision warnings.
+
+
+## How to Run
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Aruna13-Kumari/space-gat-dashboard.git
+cd space-gat-dashboard
+```
+
+### 2. Create and activate a virtual environment
+
+On macOS or Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Launch the dashboard
+
+```bash
+streamlit run app.py
+```
+
+Open the local URL displayed in your terminal to view the dashboard.
+
