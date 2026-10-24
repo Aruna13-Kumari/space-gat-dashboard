@@ -23,30 +23,17 @@ A graph-based machine learning project that analyzes satellite and space debris 
 
 ## Project Structure
 
-  text
-Space_Debris_Project/
-├── data/
-│   ├── all_features.csv
-│   ├── labeled_features.csv
-│   ├── space_graph.pkl
-│   ├── metrics_final.txt
-│   └── confusion_matrix_final.png
-├── dashboard_data/
-├── model/
-│   ├── 01_data_collection.py
-│   ├── 02_feature_extraction.py
-│   ├── 03_graph_construction.py
-│   ├── 04_label_generation.py
-│   ├── gat_model.py
-│   ├── train.py
-│   └── evaluate.py
-├── app.py
-├── earth.py
-├── earth_view.html
-├── style.css
-├── requirements.txt
-└── README.md
-```
+space-gat-dashboard/
+├── dashboard_data/   # Dashboard datasets and visualization data
+├── data/             # Orbital data, graph files, and evaluation results
+├── model/            # Model files and related resources
+├── static/           # Earth visualization HTML and static assets
+├── app.py            # Streamlit dashboard entry point
+├── earth.py          # Earth visualization data preparation
+├── style.css         # Dashboard styling
+├── requirements.txt  # Python dependencies
+└── README.md         # Project documentation
+
 
 ## Methodology
 
