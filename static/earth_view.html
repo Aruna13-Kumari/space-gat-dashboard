@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js"></script>
+
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+
+<style>
+html,body,#cesiumContainer{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    background:transparent !important;
+}
+
+#cesiumContainer {
+    position: absolute;
+    inset:0;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<div id="earthSection">
+
+    <div id="cesiumContainer"></div>
+    <div id="hoverLabel"></div>
+</div>
+
+<script>
+
+Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiZmIyYWNjNC0xZWE5LTQxMzQtOGEyZS05OTg4MDI1MmE1OTAiLCJpZCI6NDYzNTQ0LCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODU3Nzg4NDl9.wc9PoeJViHkB9aU7jZT4WITbk-49Kkn2XjwH9CrzJ2c";
+
+const viewer = new Cesium.Viewer(
+    "cesiumContainer",
+    {
+        animation:false,
+        timeline:false,
+        baseLayerPicker:true,
+        homeButton:false,
+        sceneModePicker:false,
+        navigationHelpButton:false,
+        geocoder:false,
+        fullscreenButton:false,
+        infoBox:false,
+        selectionIndicator:false,       
+        contextOptions:{
+            webgl:{
+                alpha:true
+            }
+        }
+    }
+);
+
+viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
+viewer.scene.globe.baseColor = Cesium.Color.TRANSPARENT;
+viewer.resize();
+viewer.scene.requestRender();
+
+viewer.imageryLayers.get(0).brightness = 0.65;
+viewer.imageryLayers.get(0).contrast = 1.28;
+viewer.imageryLayers.get(0).gamma = 0.75;
+viewer.imageryLayers.get(0).saturation = 0.85;
+
+viewer.scene.globe.show = true;
+viewer.scene.skyBox.show = false;
+viewer.scene.skyAtmosphere.show = true;
+viewer.scene.globe.enableLighting = false;
+viewer.scene.globe.showGroundAtmosphere = true;
+viewer.scene.globe.depthTestAgainstTerrain = false;
+
+viewer.camera.flyTo({
+
+    destination: Cesium.Cartesian3.fromDegrees(
+        0,
+        20,
+        22000000
+    ),
+    orientation: {
+        heading: 0,
+        pitch: Cesium.Math.toRadians(-90),
+        roll: 0
+    },
+    duration: 2
+});
+
+let satellites;
+let debris;
+let highRisk;
+let lowRisk;
+
+let selectedObject;
+let selectedPoint;
+
+fetch("http://localhost:8000/dashboard_data/objects.json?t=" + Date.now() )
+.then(response => response.json())
+.then(objects => {
+
+
+    satellites =
+        viewer.scene.primitives.add(
+            new Cesium.PointPrimitiveCollection()
+        );
+
+    debris =
+        viewer.scene.primitives.add(
+            new Cesium.PointPrimitiveCollection()
+        );
+
+    highRisk =
+        viewer.scene.primitives.add(
+            new Cesium.PointPrimitiveCollection()
+        );
+
+    lowRisk =
+        viewer.scene.primitives.add(
+            new Cesium.PointPrimitiveCollection()
+        );
+
+
+    objects.forEach(obj => {
+
+
+        const position =
+            Cesium.Cartesian3.fromDegrees(
+                obj.lon,
+                obj.lat,
+                obj.alt
+            );
+
+
+        if(obj.type === "Debris"){
+
+            debris.add({
+
+                position: position,
+                pixelSize: 1,
+                color:
+                Cesium.Color.fromCssColorString("#FF9F6E")
+                .withAlpha(0.85),
+                id: obj
+            });
+
+        } else{
+
+            satellites.add({
+
+                position: position,
+                pixelSize: 1,
+                color:
+                Cesium.Color.fromCssColorString("#DCEBFF")
+                .withAlpha(0.75),
+                id: obj
+            });
+
+        }
+
+        // High Risk / Low Risk
+        if (obj.risk === "High Risk") {
+
+            highRisk.add({
+
+                position: position,
+                pixelSize: 1,
+                color: Cesium.Color.fromCssColorString("#B85D6A").withAlpha(0.7),
+                id: obj
+
+            });
+
+        } else {
+
+            lowRisk.add({
+
+                position: position,
+                pixelSize: 1,
+                color: Cesium.Color.fromCssColorString("#7FA88A").withAlpha(0.75),
+                id: obj
+
+            });
+        }
+    
+    });
+
+    highRisk.show = false;
+    lowRisk.show = false;
+
+    console.log(
+        "Loaded:",
+        objects.length,
+        "objects"
+    );
+
+
+});
+
+
+const label = document.getElementById("hoverLabel");
+const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+
+handler.setInputAction(function(movement){
+
+    const picked = viewer.scene.pick(movement.endPosition);
+
+    if(picked && picked.primitive && picked.primitive.id){
+        let obj = picked.primitive.id;
+        label.style.display = "block";
+        label.innerHTML = picked.primitive.id.name;
+
+        if(obj.type === "Debris"){
+            label.style.borderColor = "#FF9F6E";
+            label.style.color = "#FF9F6E";
+        }
+        else{
+            label.style.borderColor = "#DCEBFF";
+            label.style.color = "#DCEBFF";
+        }
+        label.style.left = movement.endPosition.x + 15 + "px";
+        label.style.top = movement.endPosition.y + 15 + "px";
+    }else{
+        label.style.display = "none";   
+    }   
+        
+}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+setInterval(() => {
+
+    fetch("http://localhost:8000/dashboard_data/view_mode.json?t=" + Date.now())
+    .then(r => r.json())
+    .then(data => {
+
+        if(data.mode === "type"){
+
+            satellites.show = true;
+            debris.show = true;
+
+            highRisk.show = false;
+            lowRisk.show = false;
+
+        }
+
+        if(data.mode === "risk"){
+
+            satellites.show = false;
+            debris.show = false;
+
+            highRisk.show = true;
+            lowRisk.show = true;
+
+        }
+
+    });
+
+}, 1000);
+
+let lastTarget = null;
+
+setInterval(() => {
+
+    fetch("http://localhost:8000/dashboard_data/fly_to.json?t=" + Date.now())
+    .then(r => r.json())
+    .then(data => {
+        console.log("FLYTO DATA:", data);
+
+        if(!data.lat) return;
+
+        let current =
+        data.lat + "," + data.lon;
+
+        // prevent repeated zooming
+        if(current === lastTarget)
+            return;
+
+        lastTarget = current;
+
+        console.log(viewer);
+        viewer.camera.flyTo({
+
+            destination:
+            Cesium.Cartesian3.fromDegrees(
+
+                data.lon,
+                data.lat,
+                data.alt + 2000000
+            ),
+            duration:2
+        });
+
+        // remove previous highlight
+        if(selectedPoint){
+
+            viewer.scene.primitives.remove(
+                selectedPoint
+            );
+
+        }
+        // create highlight
+
+        selectedPoint =
+        viewer.scene.primitives.add(
+            new Cesium.PointPrimitiveCollection()
+        );
+
+        selectedPoint.add({
+
+            position:
+            Cesium.Cartesian3.fromDegrees(
+
+                data.lon,
+                data.lat,
+                data.alt 
+
+            ),
+
+            pixelSize:14,
+
+            color:
+            Cesium.Color.fromCssColorString(
+                "#FFFFFF"
+            ),
+
+            outlineColor:
+            Cesium.Color.fromCssColorString(
+                "#7EC8FF"
+            ),
+            outlineWidth:3
+
+        });
+    });
+},1000);
+
+</script>
+
+</body>
+</html>

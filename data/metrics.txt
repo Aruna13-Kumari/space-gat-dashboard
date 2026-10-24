@@ -1,0 +1,7 @@
+
+GAT Model
+
+Accuracy : 0.7192
+Precision: 0.7382
+Recall   : 0.7192
+F1 Score : 0.7136

@@ -1,0 +1,11 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.DS_Store
+Thumbs.db
+data/raw_tle_*.txt
+Space_Debris_Project/
+installed_packages.txt
+*.log

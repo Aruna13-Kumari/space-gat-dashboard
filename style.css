@@ -1,0 +1,303 @@
+/* Hide Streamlit UI */
+#MainMenu {visibility:hidden;}
+header {visibility:hidden;}
+footer {visibility:hidden;}
+
+/* Full page background */
+.stApp{
+
+    background-image:
+        linear-gradient(rgba(6,8,18,0.78), rgba(6,8,18,0.86)),
+        url("dashboard_data/background.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+/* Remove white padding */
+.block-container{
+
+    padding-top:1rem;
+    padding-left:2rem;
+    padding-right:2rem;
+    padding-bottom:0rem;
+    max_width:95%
+}
+
+/* Typography */
+
+h1{
+    font-size:52px;
+    letter-spacing:2px;
+    font-weight:700;
+}
+h2{
+    font-size:30px;
+    color:white;
+}
+h3{
+    color:#87e6ff;
+}
+
+.stTextInput input{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+}
+
+/* Section Titles */
+.section-title{
+
+    color:#9CCBFF;
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:4px;
+    margin-bottom:15px;
+}
+
+/* Divider */
+hr{
+
+    border:none;
+    height:1px;
+    background:rgba(255,255,255,.10);
+    margin-top:20px;
+    margin-bottom:25px;
+}
+
+
+/* Metric Cards */   
+.hud-card{
+position:relative;
+width:220px;
+height:92px;
+margin:8px;
+}
+
+.hud-svg{
+position:absolute;
+inset:0;
+z-index:0;
+width:100%;
+height:100%;
+overflow:visible;
+filter:drop-shadow(0 0 6px rgba(120,180,255,.10));
+}
+
+.hud-content{
+position:absolute;
+inset:0;
+z-index:5;
+padding: 18px 22px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+pointer-events:none;
+}
+
+.hud-title{
+font-size:12px;
+letter-spacing:2px;
+color:#A9B8D6;
+display:flex;
+align-items:center;
+gap:8px;
+text-transform:uppercase;
+}
+
+.hud-value{
+font-size:28px;
+font-weight:500;
+color:#F4F7FF;
+margin-top:28px;
+}
+
+.hud-icon{
+
+    color:#61d7ff;
+    line-height:1;
+    font-size:18px;
+}
+
+#hoverLabel{
+    position:absolute;
+    display:none;
+    padding:6px 12px;
+    border:1px solid #8EAEC6;
+    background:rgba(10,18,32,.88);
+    color:#EAF6FF;
+    font-family:Inter,sans-serif;
+    font-size:12px;
+    pointer-events:none;
+    backdrop-filter:blur(6px);
+    letter-spacing:1px;
+}
+
+#earthSection{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* Compact Sidebar */
+
+[data-testid="stSidebar"] {
+    min-width: 170px;
+    max-width: 170px;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 1rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+/* HUD Toggle */
+
+div.stButton > button{
+
+    height:34px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:1px;
+    background:rgba(18,24,36,.45);
+    color:#DDE8F5;
+    border:1px solid rgba(170,185,205,.25);
+    border-radius:4px;
+    transition:.2s;
+}
+
+div.stButton > button:hover{
+
+    background:rgba(42,56,78,.70);
+    border-color:#D9E6F5;
+    color:white;
+    box-shadow:0 0 8px rgba(210,225,245,.18);
+}
+
+div.stButton > button:focus{
+    border-color:#DCEBFF;
+    box-shadow:none;
+}
+
+.hud-info{
+    background:rgba(8,12,35,0.25);
+    border:1px solid #8FAFD6;
+    padding:14px 20px;
+    height:70px;
+}
+
+.hud-label{
+    font-size:11px;
+    letter-spacing:2px;
+    color:#9FB6D8;
+}
+
+.hud-value{
+    margin-top:8px;
+    font-size:18px;
+    color:#F5F8FF;
+}
+
+/* ==========================
+   TRANSPARENT SIDEBAR
+========================== */
+
+[data-testid="stSidebar"]{
+    background: rgba(8,12,35,0.15) !important;
+    backdrop-filter: blur(18px);
+    border-right: 1px solid rgba(126,200,255,0.15);
+}
+
+[data-testid="stSidebar"] > div:first-child{
+    background: transparent !important;
+}
+/* ==========================
+   MISSION MODULES
+========================== */
+
+/* Heading */
+[data-testid="stSidebar"] label{
+    font-family:"Segoe UI", Arial, sans-serif !important;
+    font-size:15px !important;
+    font-weight:700 !important;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:#BFD7F6 !important;
+}
+
+/* Hide radio circle */
+[data-testid="stSidebar"] input{
+    display:none !important;
+}
+
+/* Navigation row */
+[data-testid="stSidebar"] div[role="radiogroup"] > label{
+    padding:8px 12px !important;
+    width:fit-content;
+    display:inline-flex !important;
+    border-left:3px solid transparent;
+    color:#EAF2FF !important;
+    font-size: 8px !important;
+    font-weight:500 !important;
+    background:transparent !important;
+}
+
+/* Hover */
+[data-testid="stSidebar"] div[role="radiogroup"] > label:hover{
+    background:rgba(126,200,255,.06) !important;
+    border-left-color:#5FB9FF;
+}
+
+/* Selected */
+[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked){
+    border-left:3px solid #7EC8FF;
+    background:rgba(126,200,255,.08) !important;
+}
+
+/* Remove ALL backgrounds inside the text input */
+.stTextInput *,
+div[data-baseweb="input"],
+div[data-baseweb="base-input"]{
+    background: transparent !important;
+}
+
+/* Glass container */
+div[data-baseweb="input"]{
+    background: rgba(20, 30, 55, 0.55) !important;
+    border: 1px solid rgba(103,200,255,0.45) !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Input field */
+div[data-baseweb="input"] input{
+    background: transparent !important;
+    border: 1px solid rgba(103,200,255,0.45) !important;
+    color: #F5F8FF !important;
+    box-shadow: 0 0 6px rgba(103,200,255,0.12) !important;
+}
+
+/* Focus */
+div[data-baseweb="input"]:focus-within{
+    border-color: #56D8FF !important;
+    box-shadow: 0 0 8px rgba(86,216,255,.25) !important;
+}
+
+
+[data-testid="stSidebar"] img {
+    margin-top: -70px;
+    width: 110px;
+    height: 80px;
+    object-fit: contain;
+}
+/* Hide all fullscreen/view buttons in sidebar images */
+section[data-testid="stSidebar"] button {
+    visibility: hidden;
+}
+
+section[data-testid="stSidebar"] button svg {
+    display: none;
+}
