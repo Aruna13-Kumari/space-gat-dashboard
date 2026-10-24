@@ -21,38 +21,40 @@ A graph-based machine learning project that analyzes satellite and space debris 
 * **Dashboard:** Streamlit, HTML, CSS, CesiumJS
 * **Development:** VS Code, Google Colab
 
+
 ## Project Structure
 
+```text
 space-gat-dashboard/
 ├── dashboard_data/   # Dashboard datasets and visualization data
-├── data/             # Orbital data, graph files, and evaluation results
+├── data/             # Orbital data and evaluation results
 ├── model/            # Model files and related resources
-├── static/           # Earth visualization HTML and static assets
+├── static/           # Earth visualization and static assets
 ├── app.py            # Streamlit dashboard entry point
 ├── earth.py          # Earth visualization data preparation
 ├── style.css         # Dashboard styling
 ├── requirements.txt  # Python dependencies
 └── README.md         # Project documentation
-
+```
 
 ## Methodology
 
 1. **Data Collection:** Gather satellite and space debris Two-Line Element (TLE) data.
 2. **Feature Extraction:** Extract orbital, positional, and velocity-related features.
 3. **Graph Construction:** Represent objects as nodes and their spatial relationships as edges.
-4. **Risk Label Generation:** Generate binary risk labels using a distance- and relative-velocity-based scoring method.
+4. **Risk Label Generation:** Generate labels using a distance- and relative-velocity-based scoring method.
 5. **Model Training:** Train a Graph Attention Network to classify objects into risk categories.
-6. **Evaluation:** Evaluate model predictions on a held-out test set.
-7. **Visualization:** Display orbital objects and risk analytics through an interactive dashboard.
+6. **Evaluation:** Evaluate predictions on a held-out test set.
+7. **Visualization:** Display orbital objects and risk analytics through the dashboard.
 
 ## Model Architecture
 
 The model uses two Graph Attention Network layers:
 
-* **Input:** 17 node features
-* **First layer:** 8 attention heads with 64 hidden features per head
-* **Second layer:** 2 output classes
-* **Dropout:** 0.3
+- **Input:** 17 node features
+- **First layer:** 8 attention heads with 64 hidden features per head
+- **Second layer:** 2 output classes
+- **Dropout:** 0.3
 
 The model is implemented using PyTorch Geometric.
 
@@ -60,9 +62,7 @@ The model is implemented using PyTorch Geometric.
 
 Evaluation metrics and the confusion matrix are provided in the `data/` directory.
 
-
 The model predicts labels derived from the project's risk-scoring methodology. Its predictions should not be interpreted as validated real-world collision probabilities or operational collision warnings.
-
 
 ## How to Run
 
@@ -89,6 +89,12 @@ pip install -r requirements.txt
 ```
 
 ### 4. Launch the dashboard
+
+```bash
+streamlit run app.py
+```
+
+Open the local URL displayed in your terminal to view the dashboard.
 
 ```bash
 streamlit run app.py
